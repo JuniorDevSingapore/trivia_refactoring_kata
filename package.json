@@ -8,8 +8,8 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "play":"node src/main.js",
-    "gen_golden_master":"node golden_master/golden_master_generator.js"
+    "play": "node src/main.js",
+    "gen_golden_master": "node golden_master/golden_master_generator.js"
   },
   "devDependencies": {
     "jest": "^28.1.1",
