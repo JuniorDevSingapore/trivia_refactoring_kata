@@ -1,54 +1,62 @@
-var Game = function () {
-  var players = new Array();
-  var places = new Array(6);
-  var purses = new Array(6);
-  var inPenaltyBox = new Array(6);
+class Question {
+  
+}
 
-  var popQuestions = new Array();
-  var scienceQuestions = new Array();
-  var sportsQuestions = new Array();
-  var rockQuestions = new Array();
+const Game = function () {
+  const players = [];
+  const places = new Array(6);
+  const purses = new Array(6);
+  const inPenaltyBox = new Array(6);
 
-  var currentPlayer = 0;
-  var isGettingOutOfPenaltyBox = false;
+  const popQuestions = [];
+  const scienceQuestions = [];
+  const sportsQuestions = [];
+  const rockQuestions = [];
 
-  var didPlayerWin = function () {
+  const questionsPool = {
+    "Pop": [],
+    "Science": [],
+    "Sports": [],
+    "Rock": [],
+  }
+
+  const createQuestion = function (type, index) {
+    questionsPool[type].push(type + " Question " + index);
+  };
+
+  for (let i = 0; i < 50; i++) {
+    Object.keys(questionsPool).forEach(k => createQuestion(k, i))
+  };
+
+  let currentPlayer = 0;
+  let isGettingOutOfPenaltyBox = false;
+
+  const didPlayerWin = function () {
     return !(purses[currentPlayer] == 6)
   };
 
-  var currentCategory = function () {
-    if (places[currentPlayer] == 0)
-      return 'Pop';
-    if (places[currentPlayer] == 4)
-      return 'Pop';
-    if (places[currentPlayer] == 8)
-      return 'Pop';
-    if (places[currentPlayer] == 1)
-      return 'Science';
-    if (places[currentPlayer] == 5)
-      return 'Science';
-    if (places[currentPlayer] == 9)
-      return 'Science';
-    if (places[currentPlayer] == 2)
-      return 'Sports';
-    if (places[currentPlayer] == 6)
-      return 'Sports';
-    if (places[currentPlayer] == 10)
-      return 'Sports';
-    return 'Rock';
+  const currentCategory = function () {
+    switch(places[currentPlayer]) {
+      case 0:
+      case 4:
+      case 8:
+        return 'Pop';
+      case 1:
+      case 5:
+      case 9:
+        return 'Science';
+      case 2:
+      case 6:
+      case 10:
+        return 'Sports';
+      default:
+        return 'Rock';
+    }
   };
 
-  this.createRockQuestion = function (index) {
-    return "Rock Question " + index;
-  };
+  
 
-  for (var i = 0; i < 50; i++) {
-    popQuestions.push("Pop Question " + i);
-    scienceQuestions.push("Science Question " + i);
-    sportsQuestions.push("Sports Question " + i);
-    rockQuestions.push(this.createRockQuestion(i));
-  }
-  ;
+  
 
   this.isPlayable = function (howManyPlayers) {
     return howManyPlayers >= 2;
@@ -71,15 +79,15 @@ var Game = function () {
   };
 
 
-  var askQuestion = function () {
+  const askQuestion = function () {
     if (currentCategory() == 'Pop')
-      console.log(popQuestions.shift());
+      console.log(questionsPool['Pop'].shift());
     if (currentCategory() == 'Science')
-      console.log(scienceQuestions.shift());
+      console.log(questionsPool['Science'].shift());
     if (currentCategory() == 'Sports')
-      console.log(sportsQuestions.shift());
+      console.log(questionsPool['Sports'].shift());
     if (currentCategory() == 'Rock')
-      console.log(rockQuestions.shift());
+      console.log(questionsPool['Rock'].shift());
   };
 
   this.roll = function (roll) {
@@ -124,7 +132,7 @@ var Game = function () {
         console.log(players[currentPlayer] + " now has " +
             purses[currentPlayer] + " Gold Coins.");
 
-        var winner = didPlayerWin();
+        const winner = didPlayerWin();
         currentPlayer += 1;
         if (currentPlayer == players.length)
           currentPlayer = 0;
@@ -146,7 +154,7 @@ var Game = function () {
       console.log(players[currentPlayer] + " now has " +
           purses[currentPlayer] + " Gold Coins.");
 
-      var winner = didPlayerWin();
+      const winner = didPlayerWin();
 
       currentPlayer += 1;
       if (currentPlayer == players.length)
